@@ -1,18 +1,43 @@
 // @flow
-import * as React from 'react';
+import React, { Component } from 'react'
+import type { Children } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { ipcRenderer, remote } from 'electron'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
-type Props = {
-  children: React.Node
-};
+const { initApp } = remote.require('./utils')
 
-export default class App extends React.Component<Props> {
-  props: Props;
+injectTapEventPlugin()
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  receiveDispatch: object => object
+}, dispatch)
+
+class App extends Component {
+  props: {
+    children: Children,
+    receiveDispatch: ({}) => void
+  };
+
+  componentWillMount() {
+    ipcRenderer.on('dispatch', (event, data) => {
+      this.props.receiveDispatch(data)
+    })
+
+    initApp()
+  }
 
   render() {
     return (
-      <div>
-        {this.props.children}
-      </div>
-    );
+      <MuiThemeProvider>
+        <div>
+          {this.props.children}
+        </div>
+      </MuiThemeProvider>
+    )
   }
 }
+
+export default connect(null, mapDispatchToProps)(App)

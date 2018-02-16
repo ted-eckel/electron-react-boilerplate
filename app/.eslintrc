@@ -1,5 +1,7 @@
 {
   "rules": {
+    "semi": ["error", "never"],
+    "no-return-assign": ["error", "except-parens"],
     "flowtype/boolean-style": ["error", "boolean"],
     "flowtype/define-flow-type": "warn",
     "flowtype/delimiter-dangle": ["error", "never"],
@@ -10,7 +12,7 @@
     "flowtype/require-parameter-type": "off",
     "flowtype/require-return-type": "off",
     "flowtype/require-valid-file-annotation": "off",
-    "flowtype/semi": ["error", "always"],
+    "flowtype/semi": ["error", "never"],
     "flowtype/space-after-type-colon": ["error", "always"],
     "flowtype/space-before-generic-bracket": ["error", "never"],
     "flowtype/space-before-type-colon": ["error", "never"],

@@ -10,77 +10,76 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
-import MenuBuilder from './menu';
-
-let mainWindow = null;
+import { app, BrowserWindow, ipcMain } from 'electron'
+import MenuBuilder from './menu'
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
+  const sourceMapSupport = require('source-map-support')
+  sourceMapSupport.install()
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  require('electron-debug')();
-  const path = require('path');
-  const p = path.join(__dirname, '..', 'app', 'node_modules');
-  require('module').globalPaths.push(p);
+  require('electron-debug')()
+  const path = require('path')
+  const p = path.join(__dirname, '..', 'app', 'node_modules')
+  require('module').globalPaths.push(p)
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  const installer = require('electron-devtools-installer')
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS
   const extensions = [
     'REACT_DEVELOPER_TOOLS',
     'REDUX_DEVTOOLS'
-  ];
+  ]
 
   return Promise
     .all(extensions.map(name => installer.default(installer[name], forceDownload)))
-    .catch(console.log);
-};
+    .catch(console.log)
+}
 
-
-/**
- * Add event listeners...
- */
+ipcMain.on('mainConsoleLog', (event, label, data) => {
+  console.log(label)
+  console.log(data)
+  console.log('')
+})
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if (process.platform !== 'darwin') {
-    app.quit();
+    app.quit()
   }
-});
+})
 
 
 app.on('ready', async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
+    await installExtensions()
   }
 
-  mainWindow = new BrowserWindow({
+  global.mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
     height: 728
-  });
+  })
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  global.mainWindow.loadURL(`file://${__dirname}/app.html`)
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on('did-finish-load', () => {
-    if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
+  global.mainWindow.webContents.on('did-finish-load', () => {
+    if (!global.mainWindow) {
+      throw new Error('"mainWindow" is not defined')
     }
-    mainWindow.show();
-    mainWindow.focus();
-  });
+    global.mainWindow.show()
+    global.mainWindow.focus()
+  })
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  global.mainWindow.on('closed', () => {
+    global.mainWindow = null
+  })
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
-});
+  const menuBuilder = new MenuBuilder(global.mainWindow)
+  menuBuilder.buildMenu()
+})
