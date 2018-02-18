@@ -102,7 +102,7 @@ export default merge.smart(baseConfig, {
       },
       // SASS support - compile all .global.scss files and pipe it to style.css
       {
-        test: /\.global\.scss$/,
+        test: /\.global\.(scss|sass)$/,
         use: [
           {
             loader: 'style-loader'
@@ -120,7 +120,7 @@ export default merge.smart(baseConfig, {
       },
       // SASS support - compile all other .scss files and pipe it to style.css
       {
-        test: /^((?!\.global).)*\.scss$/,
+        test: /^((?!\.global).)*\.(scss|sass)$/,
         use: [
           {
             loader: 'style-loader'
@@ -261,7 +261,7 @@ export default merge.smart(baseConfig, {
     },
     before() {
       if (process.env.START_HOT) {
-        console.log('Staring Main Process...');
+        console.log('Starting Main Process...');
         spawn(
           'npm',
           ['run', 'start-main-dev'],
