@@ -33,6 +33,7 @@ import {
 import { createOrUpdateNote, archiveNote, trashNote } from '../../actions/files/notes'
 import { trashFiles, archiveFiles } from '../../actions/files'
 import { toggleCreateNoteModal, closeCreateNoteModal } from '../../actions/app'
+import colorHexName from './colorHexName'
 
 const mapStateToProps = state => ({
   createNoteModalOpen: createNoteModalOpenSelector(state),
@@ -432,33 +433,6 @@ class CreateNoteModal extends Component {
       />
     ]
 
-    const colorHexName = () => {
-      if (this.state.color) {
-        switch (this.state.color) {
-          case 'DEFAULT':
-            return 'dialogHack-white'
-          case 'RED':
-            return 'dialogHack-red'
-          case 'ORANGE':
-            return 'dialogHack-orange'
-          case 'YELLOW':
-            return 'dialogHack-yellow'
-          case 'GREEN':
-            return 'dialogHack-green'
-          case 'TEAL':
-            return 'dialogHack-teal'
-          case 'BLUE':
-            return 'dialogHack-blue'
-          case 'GRAY':
-            return 'dialogHack-gray'
-          default:
-            return 'dialogHack-white'
-        }
-      } else {
-        return 'dialogHack-white'
-      }
-    }
-
     const title = (
       <input type="text" value={this.state.title} onChange={this.updateTitleState} placeholder="Title" />
     )
@@ -473,7 +447,7 @@ class CreateNoteModal extends Component {
           open={this.props.createNoteModalOpen}
           onRequestClose={this.props.closeCreateNoteModal}
           autoScrollBodyContent
-          contentClassName={colorHexName()}
+          contentClassName={colorHexName(this.state.color)}
           actionsContainerStyle={{ borderTop: 'none' }}
           title={title}
           titleStyle={{
