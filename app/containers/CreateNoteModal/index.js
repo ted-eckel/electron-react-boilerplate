@@ -23,16 +23,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import htmlConvert from '../utils/files/notes/importer'
 // import { convertToRaw } from 'draft-js'
-import exporter from '../utils/files/notes/exporter'
-import jsonExporter from '../utils/files/notes/jsonExporter'
+import exporter from '../../utils/files/notes/exporter'
+import jsonExporter from '../../utils/files/notes/jsonExporter'
 import {
   createNoteModalOpenSelector,
   createdNoteSelector,
   allTagsSelector,
-} from '../selectors'
-import { createOrUpdateNote, archiveNote, trashNote } from '../actions/files/notes'
-import { trashFiles, archiveFiles } from '../actions/files'
-import { toggleCreateNoteModal, closeCreateNoteModal } from '../actions/app'
+} from '../../selectors'
+import { createOrUpdateNote, archiveNote, trashNote } from '../../actions/files/notes'
+import { trashFiles, archiveFiles } from '../../actions/files'
+import { toggleCreateNoteModal, closeCreateNoteModal } from '../../actions/app'
 
 const mapStateToProps = state => ({
   createNoteModalOpen: createNoteModalOpenSelector(state),
