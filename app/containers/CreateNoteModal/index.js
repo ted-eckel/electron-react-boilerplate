@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
 import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import IconMenu from 'material-ui/IconMenu'
-import IconButton from 'material-ui/IconButton'
-import ActionLabel from 'material-ui/svg-icons/action/label'
-import ActionDone from 'material-ui/svg-icons/action/done'
-import ActionDelete from 'material-ui/svg-icons/action/delete'
-import ImagePalette from 'material-ui/svg-icons/image/palette'
-import Paper from 'material-ui/Paper'
+// import FlatButton from 'material-ui/FlatButton'
+// import IconMenu from 'material-ui/IconMenu'
+// import IconButton from 'material-ui/IconButton'
+// import ActionLabel from 'material-ui/svg-icons/action/label'
+// import ActionDone from 'material-ui/svg-icons/action/done'
+// import ActionDelete from 'material-ui/svg-icons/action/delete'
+// import ImagePalette from 'material-ui/svg-icons/image/palette'
+// import Paper from 'material-ui/Paper'
 import {
   Editor,
   createEditorState,
@@ -17,8 +17,8 @@ import {
   Block,
 } from 'medium-draft'
 // import 'medium-draft/lib/index.css'
-import TagsInput from 'react-tagsinput'
-import Autosuggest from 'react-autosuggest'
+// import TagsInput from 'react-tagsinput'
+// import Autosuggest from 'react-autosuggest'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import htmlConvert from '../utils/files/notes/importer'
@@ -34,7 +34,8 @@ import { createOrUpdateNote, archiveNote, trashNote } from '../../actions/files/
 import { trashFiles, archiveFiles } from '../../actions/files'
 import { toggleCreateNoteModal, closeCreateNoteModal } from '../../actions/app'
 import colorHex from './colorHex'
-import colorButtons from './colorButtons'
+import CreateNoteModalActions from './CreateNoteModalActions'
+// import colorButtons from './colorButtons'
 
 const mapStateToProps = state => ({
   createNoteModalOpen: createNoteModalOpenSelector(state),
@@ -207,73 +208,6 @@ class CreateNoteModal extends Component {
 
     const allTags = this.props.allTags
 
-    const defaultRenderTag = props => {
-      const {
-        tag,
-        key,
-        disabled,
-        onRemove,
-        classNameRemove,
-        getTagDisplayValue,
-        ...other
-      } = props
-
-      return (
-        <span key={key} {...other}>
-          <span style={{
-            whiteSpace: 'nowrap',
-            maxWidth: '130px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: 'inline-block',
-            verticalAlign: 'top'
-          }}
-          >
-            {getTagDisplayValue(typeof tag === 'object' ? tag.name : tag)}
-          </span>
-          {!disabled &&
-            <a className={classNameRemove} onClick={() => onRemove(key)} />
-          }
-        </span>
-      )
-    }
-
-    function autocompleteRenderInput({ addTag, ...props }) {
-      const handleOnChange = (e, { newValue, method }) => {
-        if (method === 'enter') {
-          e.preventDefault()
-        } else {
-          props.onChange(e)
-        }
-      }
-
-      const inputValue = (props.value && props.value.trim().toLowerCase()) || ''
-      const inputLength = inputValue.length
-
-      // let suggestions = tags.filter((tag) => (
-      //   tag.toLowerCase().slice(0, inputLength) === inputValue
-      // ))
-      const suggestions = Object.keys(allTags)
-        .map(id => allTags[id]).sort((a, b) => a.path - b.path)
-        .filter(tag => tag.name.toLowerCase().slice(0, inputLength) === inputValue)
-
-      return (
-        <Autosuggest
-          ref={props.ref}
-          suggestions={suggestions}
-          alwaysRenderSuggestions
-          getSuggestionValue={(suggestion) => suggestion.name}
-          renderSuggestion={(suggestion) => <span>{suggestion.path}</span>}
-          inputProps={{ ...props, onChange: handleOnChange }}
-          onSuggestionSelected={(e, { suggestion }) => {
-            addTag(suggestion)
-          }}
-          onSuggestionsClearRequested={() => {}}
-          onSuggestionsFetchRequested={() => {}}
-        />
-      )
-    }
-
     const handleCloseMenu = (open, reason) => {
       if (open) {
         this.setState({ open: true })
@@ -281,78 +215,6 @@ class CreateNoteModal extends Component {
         this.setState({ open: false })
       }
     }
-
-    const defaultRenderLayout = (tagComponents, inputComponent) => {
-      const archive = this.archive
-      const deleteFunc = this.trash
-      const notePath = this.props.createdNoteState.path
-      return (
-        <div>
-          {tagComponents}
-          <div className="item-toolbar" style={{ padding: '0 15px' }}>
-            <IconMenu
-              onRequestChange={(open, reason) => handleCloseColorMenu(open, reason)}
-              open={this.state.colorMenuOpen}
-              iconButtonElement={
-                <IconButton className="dialog-toolbar-button">
-                  <ImagePalette data-tip="change color" />
-                </IconButton>
-              }
-              autoWidth={false}
-              menuStyle={{ width: '174px', height: '115px' }}
-            >
-              <div style={{ width: '124px', margin: '0 25px' }}>
-                {colorButtons(this.handleColorChange, this.state.color)}
-              </div>
-              <ReactTooltip place="bottom" type="dark" effect="solid" />
-            </IconMenu>
-            <IconMenu
-              onRequestChange={(open, reason) => handleCloseMenu(open, reason)}
-              open={this.state.open}
-              iconButtonElement={
-                <IconButton className="dialog-toolbar-button">
-                  <ActionLabel
-                    data-tip={this.state.tags.length ? 'change tags' : 'add tags'}
-                  />
-                </IconButton>
-              }
-              width={200}
-            >
-              {inputComponent}
-            </IconMenu>
-            <IconButton disabled={notePath === 'new'} onTouchTap={() => archive()} className="dialog-toolbar-button">
-              <ActionDone data-tip="archive" />
-            </IconButton>
-            <IconButton disabled={notePath === 'new'} onTouchTap={() => deleteFunc()} className="dialog-toolbar-button">
-              <ActionDelete data-tip="trash" />
-            </IconButton>
-            <FlatButton
-              label="Cancel"
-              onTouchTap={() => this.props.closeCreateNoteModal()}
-              style={{ color: '#202020' }}
-            />
-            <FlatButton
-              label="Save Note"
-              onTouchTap={this.createNote}
-              disabled={false /* this.disabledButton() */}
-              style={{ color: '#202020' }}
-            />
-          </div>
-          <ReactTooltip place="bottom" type="dark" effect="solid" />
-        </div>
-      )
-    }
-
-    const createNoteModalActions = [
-      <TagsInput
-        onlyUnique
-        renderInput={autocompleteRenderInput}
-        value={this.state.tags}
-        onChange={this.handleChange}
-        renderLayout={defaultRenderLayout}
-        renderTag={defaultRenderTag}
-      />
-    ]
 
     const title = (
       <input type="text" value={this.state.title} onChange={this.updateTitleState} placeholder="Title" />
@@ -363,7 +225,26 @@ class CreateNoteModal extends Component {
     return (
       <div>
         <Dialog
-          actions={createNoteModalActions}
+          actions={
+            [
+              <CreateNoteModalActions
+                handleColorChange={this.handleColorChange}
+                handleCloseColorMenu={handleCloseColorMenu}
+                handleCloseMenu={handleCloseMenu}
+                closeCreateNoteModal={this.props.closeCreateNoteModal}
+                archiveFunc={this.archive}
+                deleteFunc={this.trash}
+                createNote={this.createNote}
+                notePath={this.props.createdNoteState.path}
+                colorMenuOpen={this.state.colorMenuOpen}
+                color={this.state.color}
+                open={this.state.open}
+                tags={this.state.tags}
+                allTags={this.props.allTags}
+                handleChange={this.handleChange}
+              />
+            ]
+          }
           modal={false}
           open={this.props.createNoteModalOpen}
           onRequestClose={this.props.closeCreateNoteModal}
