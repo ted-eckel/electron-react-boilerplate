@@ -34,6 +34,7 @@ import { createOrUpdateNote, archiveNote, trashNote } from '../../actions/files/
 import { trashFiles, archiveFiles } from '../../actions/files'
 import { toggleCreateNoteModal, closeCreateNoteModal } from '../../actions/app'
 import colorHex from './colorHex'
+import colorButtons from './colorButtons'
 
 const mapStateToProps = state => ({
   createNoteModalOpen: createNoteModalOpenSelector(state),
@@ -196,59 +197,6 @@ class CreateNoteModal extends Component {
   }
 
   render() {
-    const item = this.props.createdNoteState
-    const colorArray = ['DEFAULT', 'RED', 'ORANGE', 'YELLOW', 'GRAY', 'BLUE', 'TEAL', 'GREEN']
-
-    const colorCheckMark = color => {
-      if (this.state.color) {
-        if (this.state.color === color) {
-          return (
-            <ActionDone />
-          )
-        } else if (this.state.color === 'DEFAULT' && color === 'WHITE') {
-          return (
-            <ActionDone />
-          )
-        }
-      } else if (color === 'WHITE') {
-        return (
-          <ActionDone />
-        )
-      } else {
-        return null
-      }
-    }
-
-    const colorDataTip = (color) => {
-      if (color) {
-        if (color === 'DEFAULT') {
-          return 'white'
-        }
-        return color.toLowerCase()
-      }
-      return null
-    }
-
-    const colorButtons = colorArray.map(color => (
-      <Paper
-        circle
-        key={`${item.id}-${color}-DIALOG`}
-        data-tip={colorDataTip(color)}
-        onClick={() => this.handleColorChange(color)}
-        style={{
-          backgroundColor: colorHex(color).code,
-          height: '25px',
-          width: '25px',
-          display: 'inline-block',
-          margin: '3px',
-          cursor: 'pointer',
-          verticalAlign: 'top'
-        }}
-      >
-        {colorCheckMark(color)}
-      </Paper>
-    ))
-
     const handleCloseColorMenu = (open, reason) => {
       if (open) {
         this.setState({ colorMenuOpen: true })
@@ -354,7 +302,7 @@ class CreateNoteModal extends Component {
               menuStyle={{ width: '174px', height: '115px' }}
             >
               <div style={{ width: '124px', margin: '0 25px' }}>
-                {colorButtons}
+                {colorButtons(this.handleColorChange, this.state.color)}
               </div>
               <ReactTooltip place="bottom" type="dark" effect="solid" />
             </IconMenu>
