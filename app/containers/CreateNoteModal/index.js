@@ -33,7 +33,6 @@ import {
 import { createOrUpdateNote, archiveNote, trashNote } from '../../actions/files/notes'
 import { trashFiles, archiveFiles } from '../../actions/files'
 import { toggleCreateNoteModal, closeCreateNoteModal } from '../../actions/app'
-import colorHexName from './colorHexName'
 import colorHex from './colorHex'
 
 const mapStateToProps = state => ({
@@ -237,7 +236,7 @@ class CreateNoteModal extends Component {
         data-tip={colorDataTip(color)}
         onClick={() => this.handleColorChange(color)}
         style={{
-          backgroundColor: colorHex(color),
+          backgroundColor: colorHex(color).code,
           height: '25px',
           width: '25px',
           display: 'inline-block',
@@ -421,7 +420,7 @@ class CreateNoteModal extends Component {
           open={this.props.createNoteModalOpen}
           onRequestClose={this.props.closeCreateNoteModal}
           autoScrollBodyContent
-          contentClassName={colorHexName(this.state.color)}
+          contentClassName={colorHex(this.state.color).className}
           actionsContainerStyle={{ borderTop: 'none' }}
           title={title}
           titleStyle={{
@@ -430,7 +429,7 @@ class CreateNoteModal extends Component {
             fontSize: '17px',
             lineHeight: '23px',
             padding: '24px 24px 10px',
-            backgroundColor: colorHex(colorState),
+            backgroundColor: colorHex(colorState).code,
             width: '93%'
           }}
           titleClassName="createNoteModalTitle"

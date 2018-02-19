@@ -2,24 +2,24 @@ export default color => {
   if (color) {
     switch (color) {
       case 'DEFAULT':
-        return '#fff'
+        return { code: '#fff', className: 'dialogHack-white' }
       case 'RED':
-        return 'rgb(255, 109, 63)'
+        return { code: 'rgb(255, 109, 63)', className: 'dialogHack-red' }
       case 'ORANGE':
-        return 'rgb(255, 155, 0)'
+        return { code: 'rgb(255, 155, 0)', className: 'dialogHack-orange' }
       case 'YELLOW':
-        return 'rgb(255, 218, 0)'
+        return { code: 'rgb(255, 218, 0)', className: 'dialogHack-yellow' }
       case 'GREEN':
-        return 'rgb(149, 214, 65)'
+        return { code: 'rgb(149, 214, 65)', className: 'dialogHack-green' }
       case 'TEAL':
-        return 'rgb(28, 232, 181)'
+        return { code: 'rgb(28, 232, 181)', className: 'dialogHack-teal' }
       case 'BLUE':
-        return 'rgb(63, 195, 255)'
+        return { code: 'rgb(63, 195, 255)', className: 'dialogHack-blue' }
       case 'GRAY':
-        return 'rgb(184, 196, 201)'
+        return { code: 'rgb(184, 196, 201)', className: 'dialogHack-gray' }
       default:
-        return '#fff'
+        return { code: '#fff', className: 'dialogHack-white' }
     }
   }
-  return '#fff'
+  return { code: '#fff', className: 'dialogHack-white' }
 }
