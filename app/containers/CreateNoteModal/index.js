@@ -1,14 +1,6 @@
 import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
 import Dialog from 'material-ui/Dialog'
-// import FlatButton from 'material-ui/FlatButton'
-// import IconMenu from 'material-ui/IconMenu'
-// import IconButton from 'material-ui/IconButton'
-// import ActionLabel from 'material-ui/svg-icons/action/label'
-// import ActionDone from 'material-ui/svg-icons/action/done'
-// import ActionDelete from 'material-ui/svg-icons/action/delete'
-// import ImagePalette from 'material-ui/svg-icons/image/palette'
-// import Paper from 'material-ui/Paper'
 import {
   Editor,
   createEditorState,
@@ -16,13 +8,8 @@ import {
   addNewBlock,
   Block,
 } from 'medium-draft'
-// import 'medium-draft/lib/index.css'
-// import TagsInput from 'react-tagsinput'
-// import Autosuggest from 'react-autosuggest'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-// import htmlConvert from '../utils/files/notes/importer'
-// import { convertToRaw } from 'draft-js'
 import exporter from '../../utils/files/notes/exporter'
 import jsonExporter from '../../utils/files/notes/jsonExporter'
 import {
@@ -35,7 +22,6 @@ import { trashFiles, archiveFiles } from '../../actions/files'
 import { toggleCreateNoteModal, closeCreateNoteModal } from '../../actions/app'
 import colorHex from './colorHex'
 import CreateNoteModalActions from './CreateNoteModalActions'
-// import colorButtons from './colorButtons'
 
 const mapStateToProps = state => ({
   createNoteModalOpen: createNoteModalOpenSelector(state),
@@ -110,7 +96,6 @@ class CreateNoteModal extends Component {
 
     this.updateTitleState = this.updateTitleState.bind(this)
     this.createNote = this.createNote.bind(this)
-    // this.disabledButton = this.disabledButton.bind(this)
     this.focus = this.focus.bind(this)
 
     this.handleChange = this.handleChange.bind(this)
@@ -174,7 +159,6 @@ class CreateNoteModal extends Component {
   }
 
   trash() {
-    // this.props.trashFiles(id)
     this.props.trashNote(
       { name: this.props.createdNoteState.name, folder: this.props.createdNoteState.folder },
       this.props.createdNoteState.meta,
@@ -184,7 +168,6 @@ class CreateNoteModal extends Component {
   }
 
   archive() {
-    // this.props.archiveFiles(id)
     this.props.archiveNote(
       { name: this.props.createdNoteState.name, folder: this.props.createdNoteState.folder },
       this.props.createdNoteState.meta,
@@ -205,8 +188,6 @@ class CreateNoteModal extends Component {
         this.setState({ colorMenuOpen: false })
       }
     }
-
-    const allTags = this.props.allTags
 
     const handleCloseMenu = (open, reason) => {
       if (open) {
@@ -272,9 +253,6 @@ class CreateNoteModal extends Component {
               lineHeight: '19px'
             }}
           >
-          {/* <div
-            onClick={this.focus}
-          > */}
             <Editor
               ref="editor"
               placeholder="Write here. Type [ ] to add a todo ..."
