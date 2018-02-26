@@ -1,3 +1,4 @@
+// @flow
 import { remote } from 'electron'
 import moment from 'moment'
 import * as Jimp from 'jimp'
@@ -18,7 +19,25 @@ const base64ThumbAsync = base64Data => new Promise((resolve, reject) => (
     ))
 ))
 
-export default obj => {
+export default (obj: {
+  path: string,
+  tagsByID: {
+    [tagID: string | number]: {
+      id: string | number,
+      name: string,
+      parent: null | string | number
+    }
+  },
+  type: string,
+  content: string,
+  state: string,
+  dir: string,
+  name: ?string,
+  tagIDs: Array,
+  newTags: Array,
+  title: string,
+  color: ?string
+}) => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(htmlString, 'text/html')
   const noteNode = doc.getElementsByClassName('note')[0]
@@ -89,10 +108,8 @@ export default obj => {
       //   meta: { ...obj.meta, content: metaDoc.body.outerHTML }
       // })
       const createOrUpdateNoteUtil = obj.name ? updateNoteUtil : createNoteUtil
-      const newObj = obj
-      delete newObj.editorState
       return createOrUpdateNoteUtil({
-        ...newObj,
+        ...obj,
         noteContent: doc.documentElement.outerHTML,
         metaContent: metaDoc.body.outerHTML
       })

@@ -146,7 +146,8 @@ class CreateNoteModal extends Component {
       name,
       tagIDs,
       newTags,
-      ...this.state
+      title: this.state.title,
+      color: this.state.color,
     })
   }
 

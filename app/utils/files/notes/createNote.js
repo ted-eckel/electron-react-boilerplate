@@ -1,3 +1,4 @@
+// @flow
 import sanitize from 'sanitize-filename'
 import moment from 'moment'
 // import { ipcMain } from 'electron'
@@ -8,7 +9,27 @@ import createOrUpdateNoteAndMeta from './createOrUpdateNoteAndMeta'
 import { findNextName } from './index'
 import dispatch from '../../dispatch'
 
-export default obj => (
+export default (obj: {
+  path: string,
+  tagsByID: {
+    [tagID: string | number]: {
+      id: string | number,
+      name: string,
+      parent: null | string | number
+    }
+  },
+  type: string,
+  content: string,
+  state: string,
+  dir: string,
+  name: ?string,
+  tagIDs: Array,
+  newTags: Array,
+  title: string,
+  color: ?string,
+  noteContent: string,
+  metaContent: string
+}) => (
   readdirAsync(obj.dir)
     .then(data => {
       dispatch({ type: 'attempted pass of obj once it reaches createNote.js', obj })

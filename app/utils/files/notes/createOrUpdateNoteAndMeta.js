@@ -1,7 +1,31 @@
+// @flow
 import dispatch from '../../dispatch'
 import { writeFileAsync, statAsync } from '../async'
 
-export default obj => (
+export default (obj: {
+  path: string,
+  tagsByID: {
+    [tagID: string | number]: {
+      id: string | number,
+      name: string,
+      parent: null | string | number
+    }
+  },
+  content: string,
+  state: string,
+  dir: string,
+  name: ?string,
+  tagIDs: Array,
+  newTags: Array,
+  title: string,
+  color: ?string,
+  noteContent: string,
+  metaContent: string,
+  fileName: string,
+  oldFileName?: string,
+  tagIDs: Array,
+  type: string
+}) => (
   writeFileAsync(`${obj.dir}${obj.fileName}`, obj.noteContent)
     .then(() => (writeFileAsync(`${obj.dir}.${obj.fileName}.json`, JSON.stringify({
       title: obj.title,

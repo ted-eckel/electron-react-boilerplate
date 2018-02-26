@@ -1,3 +1,4 @@
+// @flow
 import { remote } from 'electron'
 // import moment from 'moment'
 // import htmlString from './htmlString'
@@ -38,7 +39,16 @@ const readNoteUtil = remote.require('./utils/files/notes/readNote')
 //   return createNoteHtml(obj)
 // }
 
-export const createOrUpdateNote = obj => (dispatch, getState) => {
+export const createOrUpdateNote = (obj: {
+  content: string,
+  state: string,
+  dir: string,
+  name: ?string,
+  tagIDs: Array,
+  newTags: Array,
+  title: string,
+  color: ?string
+}) => (dispatch, getState) => {
   const path = getState().paths
   const type = obj.name ?
     ActionType.App.Notes.UPDATE_NOTE_REQUEST :
